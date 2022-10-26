@@ -1,4 +1,4 @@
-package com.company.dto;
+package com.company.project.producingwebservice.dto;
 
 public class FindAllEmployeesDTO {
 
@@ -10,6 +10,17 @@ public class FindAllEmployeesDTO {
     public String orderBy;
 
     public boolean isDesc;
+
+
+    public boolean isDesc() {
+        return isDesc;
+    }
+
+    public void setDesc(boolean desc) {
+        isDesc = desc;
+    }
+
+
 
     public Integer getPage() {
         return page;

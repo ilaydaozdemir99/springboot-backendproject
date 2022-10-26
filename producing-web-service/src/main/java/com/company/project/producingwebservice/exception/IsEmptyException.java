@@ -1,4 +1,4 @@
-package com.company.exception;
+package com.company.project.producingwebservice.exception;
 
 public class IsEmptyException extends RuntimeException{
 

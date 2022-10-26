@@ -1,6 +1,7 @@
-package com.company.dto;
+package com.company.project.producingwebservice.dto;
 
-import com.company.entity.Address;
+
+import com.company.project.producingwebservice.entity.Address;
 
 public class CompanyDTO {
     private Long id;

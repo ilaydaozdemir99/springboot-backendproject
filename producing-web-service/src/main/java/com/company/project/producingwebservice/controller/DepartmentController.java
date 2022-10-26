@@ -1,14 +1,13 @@
-package com.company.controller;
+package com.company.project.producingwebservice.controller;
 
 
-import com.company.dto.CreateDepartmentDTO;
-import com.company.dto.DepartmentDTO;
-import com.company.dto.EmployeeDTO;
-import com.company.dto.FindAllDepartmentsDTO;
-import com.company.entity.Department;
-import com.company.entity.Employee;
-import com.company.service.DepartmentService;
-import com.company.service.EmployeeService;
+import com.company.project.producingwebservice.dto.CreateDepartmentDTO;
+import com.company.project.producingwebservice.dto.DepartmentDTO;
+import com.company.project.producingwebservice.dto.EmployeeDTO;
+import com.company.project.producingwebservice.dto.FindAllDepartmentsDTO;
+import com.company.project.producingwebservice.entity.Department;
+import com.company.project.producingwebservice.service.DepartmentService;
+import com.company.project.producingwebservice.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

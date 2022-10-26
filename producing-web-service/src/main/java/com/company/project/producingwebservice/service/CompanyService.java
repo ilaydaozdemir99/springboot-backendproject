@@ -1,14 +1,17 @@
-package com.company.service;
+package com.company.project.producingwebservice.service;
 
-import com.company.dto.CompanyDTO;
-import com.company.dto.CreateCompanyDTO;
-import com.company.dto.FindAllCompaniesDTO;
-import com.company.entity.Company;
-import com.company.entity.Department;
+
+import com.company.project.producingwebservice.dto.CompanyDTO;
+import com.company.project.producingwebservice.dto.CreateCompanyDTO;
+import com.company.project.producingwebservice.dto.FindAllCompaniesDTO;
+import com.company.project.producingwebservice.entity.Company;
+import com.company.project.producingwebservice.entity.Department;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface CompanyService {
 
     public List<Company> findAllCompany(FindAllCompaniesDTO findAllCompaniesDTO);

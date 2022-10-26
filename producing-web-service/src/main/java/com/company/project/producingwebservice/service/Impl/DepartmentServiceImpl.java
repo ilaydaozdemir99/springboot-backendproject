@@ -1,20 +1,23 @@
-package com.company.service.Impl;
+package com.company.project.producingwebservice.service.Impl;
 
-import com.company.dto.CreateDepartmentDTO;
-import com.company.dto.DepartmentDTO;
-import com.company.dto.FindAllDepartmentsDTO;
-import com.company.entity.Company;
-import com.company.entity.Department;
-import com.company.entity.Employee;
-import com.company.exception.IsEmptyException;
-import com.company.repository.DepartmentRepository;
-import com.company.service.CompanyService;
-import com.company.service.DepartmentService;
+import com.company.project.producingwebservice.dto.CreateDepartmentDTO;
+import com.company.project.producingwebservice.dto.DepartmentDTO;
+import com.company.project.producingwebservice.dto.FindAllDepartmentsDTO;
+import com.company.project.producingwebservice.entity.Department;
+import com.company.project.producingwebservice.entity.Employee;
+import com.company.project.producingwebservice.enums.EmployeeColumnName;
+import com.company.project.producingwebservice.exception.IsEmptyException;
+import com.company.project.producingwebservice.exception.ItemNotFoundException;
+import com.company.project.producingwebservice.repository.DepartmentRepository;
+import com.company.project.producingwebservice.service.CompanyService;
+import com.company.project.producingwebservice.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,43 +33,60 @@ public class DepartmentServiceImpl implements DepartmentService {
     private CompanyService companyService;
 
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public List<Department> findAllDepartment(FindAllDepartmentsDTO findAllDepartmentsDTO) {
+        try {
+            Integer page = findAllDepartmentsDTO.getPage();
+            Integer pageSize = findAllDepartmentsDTO.getPageSize();
+            String orderBy = findAllDepartmentsDTO.getOrderBy();
 
-        Integer page = findAllDepartmentsDTO.getPage();
-        Integer pageSize = findAllDepartmentsDTO.getPageSize();
-        String orderBy = findAllDepartmentsDTO.getOrderBy();
-        Pageable pageable;
-        if(findAllDepartmentsDTO.isDesc) {
-            pageable = PageRequest.of(page, pageSize, Sort.by(orderBy).descending());
+            String value = EmployeeColumnName.findValue(orderBy);
+            Pageable pageable;
+            if (findAllDepartmentsDTO.isDesc) {
+                pageable = PageRequest.of(page, pageSize, Sort.by(value).descending());
+            } else {
+                pageable = PageRequest.of(page, pageSize, Sort.by(value).ascending());
+            }
+            return departmentRepository.findAll(pageable).stream().collect(Collectors.toList());
         }
-        else {
-            pageable = PageRequest.of(page, pageSize, Sort.by(orderBy).ascending());
+        catch(Exception e){
+            throw e;
         }
-        return departmentRepository.findAll(pageable).stream().collect(Collectors.toList());
-
-
-
 
     }
-
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Department findOne(Long id) {
-        Optional<Department> dept = departmentRepository.findById(id);
-        if (dept.isEmpty()){
-            throw new IsEmptyException("Empty id !!");
+        try {
+            Optional<Department> dept = departmentRepository.findById(id);
+            if (dept.isEmpty()) {
+                throw new ItemNotFoundException("Item not found !!");
+            }
+            return dept.get();
         }
-        return dept.get();
-    }
+        catch(ItemNotFoundException e) {
+            throw e;
+        }
+        catch(Exception e){
+            throw e;
+        }
 
+    }
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public DepartmentDTO createDepartment(CreateDepartmentDTO createDepartmentDTO) {
-        Department dept = new Department();
-        dept.setName(createDepartmentDTO.getName());
-        dept.setDescription(createDepartmentDTO.getDescription());
-        dept.setCompany(companyService.findOne(createDepartmentDTO.getCompanyId()));
-        departmentRepository.save(dept);
-        return departmentToDTO(dept);
+        try {
+            Department dept = new Department();
+            dept.setName(createDepartmentDTO.getName());
+            dept.setDescription(createDepartmentDTO.getDescription());
+            dept.setCompany(companyService.findOne(createDepartmentDTO.getCompanyId()));
+            departmentRepository.save(dept);
+            return departmentToDTO(dept);
+        }
+        catch(Exception e){
+            throw e;
+        }
 
     }
 
@@ -78,26 +98,47 @@ public class DepartmentServiceImpl implements DepartmentService {
         deptDTO.setCompanyId(dept.getCompany().getId());
         return deptDTO;
     }
-
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public DepartmentDTO deleteDepartment(Long id) {
-        Optional<Department> dept = departmentRepository.findById(id);
-        if (dept.isEmpty()){
-            throw new IsEmptyException("Empty id !!");
+        try {
+            Optional<Department> dept = departmentRepository.findById(id);
+            if (dept.isEmpty()) {
+                throw new ItemNotFoundException("Item not found !!");
+            }
+            departmentRepository.deleteById(id);
+            return this.departmentToDTO(dept.get());
         }
-        departmentRepository.deleteById(id);
-        return this.departmentToDTO(dept.get());
+        catch(ItemNotFoundException e) {
+            throw e;
+        }
+        catch(Exception e){
+            throw e;
+        }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public DepartmentDTO updateDepartment(CreateDepartmentDTO createDepartmentDTO) {
-        Optional<Department> deptOptional = departmentRepository.findById(createDepartmentDTO.getId());
-        Department dept = deptOptional.get();
-        dept.setName(createDepartmentDTO.getName());
-        dept.setDescription(createDepartmentDTO.getDescription());
-        dept.setCompany(companyService.findOne(createDepartmentDTO.getCompanyId()));
-        departmentRepository.save(dept);
-        return departmentToDTO(dept);
+        try {
+            Optional<Department> deptOptional = departmentRepository.findById(createDepartmentDTO.getId());
+            if(deptOptional.isEmpty()){
+                throw new ItemNotFoundException("Item not found !!");
+            }
+            Department dept = deptOptional.get();
+            dept.setName(createDepartmentDTO.getName());
+            dept.setDescription(createDepartmentDTO.getDescription());
+            dept.setCompany(companyService.findOne(createDepartmentDTO.getCompanyId()));
+            departmentRepository.save(dept);
+            return departmentToDTO(dept);
+        }
+        catch(ItemNotFoundException e){
+            throw e;
+        }
+        catch(Exception e){
+            throw e;
+        }
+
     }
 
     @Override
@@ -113,6 +154,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return dept;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public List<Employee> findEmployees(Long id) {
         Department dept = findOne(id);

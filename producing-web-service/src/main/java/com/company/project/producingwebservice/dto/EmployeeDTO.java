@@ -1,8 +1,8 @@
-package com.company.dto;
+package com.company.project.producingwebservice.dto;
 
-import com.company.entity.Address;
-import com.company.entity.Department;
-import com.company.entity.Title;
+
+import com.company.project.producingwebservice.entity.Address;
+import com.company.project.producingwebservice.entity.Title;
 import lombok.Data;
 
 @Data
@@ -21,6 +21,10 @@ public class EmployeeDTO {
     private Address address;
 
     private Title title;
+
+
+
+
 }
 
 

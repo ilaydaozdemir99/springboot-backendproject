@@ -1,4 +1,4 @@
-package com.company.entity;
+package com.company.project.producingwebservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

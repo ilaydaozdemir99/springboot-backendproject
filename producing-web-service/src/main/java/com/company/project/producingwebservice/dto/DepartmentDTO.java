@@ -1,6 +1,5 @@
-package com.company.dto;
+package com.company.project.producingwebservice.dto;
 
-import com.company.entity.Employee;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.company.dto;
+package com.company.project.producingwebservice.dto;
 
 public class FindAllDepartmentsDTO {
 

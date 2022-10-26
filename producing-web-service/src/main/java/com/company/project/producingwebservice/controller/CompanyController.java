@@ -1,10 +1,12 @@
-package com.company.controller;
+package com.company.project.producingwebservice.controller;
 
-import com.company.dto.*;
-import com.company.entity.Company;
-import com.company.entity.Department;
-import com.company.service.CompanyService;
-import com.company.service.DepartmentService;
+import com.company.project.producingwebservice.dto.CompanyDTO;
+import com.company.project.producingwebservice.dto.CreateCompanyDTO;
+import com.company.project.producingwebservice.dto.DepartmentDTO;
+import com.company.project.producingwebservice.dto.FindAllCompaniesDTO;
+import com.company.project.producingwebservice.entity.Company;
+import com.company.project.producingwebservice.service.CompanyService;
+import com.company.project.producingwebservice.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

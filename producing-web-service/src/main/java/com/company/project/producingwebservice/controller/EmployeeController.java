@@ -1,11 +1,10 @@
-package com.company.controller;
+package com.company.project.producingwebservice.controller;
 
-import com.company.dto.CreateEmployee;
-import com.company.dto.CreateEmployeeDTO;
-import com.company.dto.EmployeeDTO;
-import com.company.dto.FindAllEmployeesDTO;
-import com.company.entity.Employee;
-import com.company.service.EmployeeService;
+
+import com.company.project.producingwebservice.dto.*;
+import com.company.project.producingwebservice.entity.Employee;
+import com.company.project.producingwebservice.service.EmployeeService;
+import com.company.project.producingwebservice.wrapper.EmployeeRequestWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +45,17 @@ public class EmployeeController {
     @DeleteMapping("/{employeeId}")
     public EmployeeDTO deleteEmployee(@PathVariable("employeeId") Long id) {
         return employeeService.deleteEmployee(id);
+    }
+
+    @GetMapping("/findAllByQuery")
+    public List<EmployeeQueryDTO> findAllEmployeeByQuery() {
+        return employeeService.findAllByQuery();
+    }
+
+    @GetMapping("/findAllByName")
+    public List<EmployeeQueryDTO> findAllByName(@RequestBody EmployeeRequestWrapper employeeRequestWrapper){
+        return employeeService.findByName(employeeRequestWrapper.getEmployeeQueryDTO(), employeeRequestWrapper.getFindAllEmployeesDTO());
+
     }
 
 }
